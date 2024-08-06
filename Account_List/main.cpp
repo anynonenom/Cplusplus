@@ -4,28 +4,12 @@
 //
 //  Created by mac on 30/7/2024.
 //
-
-#include <iostream>
-#include<vector>
-#include<algorithm>
-#include <ostream>
-#include<map>
-#include<queue>
-#include<deque>
-#include<stack>
-#include<set>
 #include "Account.hpp"
-#define N 2
-using namespace std ;
+#include <iostream>
+#include <ostream>
 
-// Structor :
-struct T {
-    string xnom ;
-    float xprice ;
-};
-void print(const int &v) {
-    cout <<  v << endl ;
-}
+
+using namespace std ;
 
 void Menu() {
     // Sign up Compte :
@@ -88,13 +72,6 @@ void Menu() {
             b = true ;
             break;
     }
-   
-   
-   
-
-    
-  
-   
     }
 }
 
