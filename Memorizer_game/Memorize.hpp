@@ -13,6 +13,8 @@
 #include<vector>
 #include<random>
 #include<algorithm>
+#include <string>
+
 using namespace std ;
 class Memorize {
 private:
