@@ -25,18 +25,18 @@ struct databook {
 
 class bookshop
 {
-private:
+private: 
     /* data */
   databook infobook ;
   
 
 public:
-    bookshop(int , std::string , std::string ,  int  /* args */);
+    bookshop( int , std::string , std::string ,  int  /* args */);
     void addbook(std::string);
-    void showbook() ;
-    void checkbook(int) ;
-    void modifybook() ;
-    void deletebook() ;
+    void showbook(std::string) ;
+    void checkbook(std::string , int) ;
+    void modifybook(std::string , std::string) ;
+    void deletebook(std::string , std::string) ;
 
     bookshop();
     // std::string  toString() ;
