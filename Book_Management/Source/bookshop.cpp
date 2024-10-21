@@ -1,7 +1,8 @@
 /*
   @20/10/2024
 */
-#include "../Header/bookshop.hpp"
+
+#include "../header/bookshop.hpp"
 #include <algorithm>
 #include <exception>
 #include <fstream>
@@ -15,7 +16,7 @@
 // compteur :
 int cmpt = 0 ;
 // 4 données
-bookshop::bookshop(int Id  , std::string nm , std::string auth , int npge/* args */)
+bookshop::bookshop( int Id  , std::string nm , std::string auth , int npge/* args */)
 {
     this->infobook.id= Id ;
     this->infobook.name = nm ;
@@ -39,7 +40,7 @@ void bookshop::addbook(std::string file_name ){
     int count ; 
     // inout.open("../../dataFiles/store.csv" , std::ios::in | std::ios::app) ;// file in and input :
     // Enregistré au file_name :
-    std::ofstream  file(file_name , std::ios::app | std::ios::out) ;
+    std::ofstream  file("../../dataFiles/"+file_name , std::ios::app | std::ios::out) ;
     // données de La bibliothéque :
     int ID ;
     std::string y ;
@@ -67,7 +68,7 @@ void bookshop::addbook(std::string file_name ){
      /// Name 
     if(file.is_open()) {
 
-    file << cmpt++ <<"," << bk.infobook.id 
+    file <<"," << bk.infobook.id 
     /* Name :*/
     << "," << bk.infobook.name  << 
     /* Author*/ 
@@ -99,9 +100,9 @@ void bookshop::addbook(std::string file_name ){
     //  voided :
 }
 
-void bookshop::showbook(){
+void bookshop::showbook(std::string file_name ){
     std::ifstream  fin ; 
-    fin.open("../../dataFiles/dataset.csv", std::ios::in);
+    fin.open("../../dataFiles/"+file_name, std::ios::in);
     // roll number :
 
     // of which the data is required
@@ -131,17 +132,17 @@ void bookshop::showbook(){
             row.push_back(word);
            
             switch(i){
-                case 0 : 
-                             std::cout << "Identify :" << row[i] << "\n";
+                case 1 : 
+                             std::cout << "Identify Address :" << row[i] << "\n";
 
         break ;
-                case 1 : 
+                case 2 : 
               std::cout << "Name     : " << row[i] << "\n";
         break ;
-                case 2: 
+                case 3: 
              std::cout << "Author   : " << row[i] << "\n";
         break ;
-                case 3 :
+                case 4 :
              std::cout << "Copies   : " << row[i] << "\n";
         break ;
 
@@ -151,8 +152,8 @@ void bookshop::showbook(){
    
         
      }
-    if(fin.is_open()) 
-        std::cout << "Record not found\n";
+    // if(fin.is_open()) 
+    //     std::cout << "Record not found\n";
     fin.close();
 }
 // string to int : 
@@ -160,10 +161,10 @@ int str_Interger(std::string &str ) {
     return std::stoi(str) ;
 }
 
-void  bookshop::checkbook(int chk) {
+void  bookshop::checkbook(std::string file_name  , int chk) {
     std::ifstream fin ;
     int roll ;
-    fin.open("../../dataFiles/dataset.csv", std::ios::in);
+    fin.open("../../dataFiles/"+file_name, std::ios::in);
     std::string line , word ;
     std::vector<std::string>  vect ;
     while (!fin.eof()) 
@@ -186,7 +187,10 @@ void  bookshop::checkbook(int chk) {
                 roll = str_Interger(vect[1]) ;
                 
             } catch (std::exception except) {
-                std::cout << except.what() << std::endl ;
+                std::cerr << "\nException : the Roll Number does not Exist!\n " ; 
+                
+
+                // std::cout << except.what() << std::endl ;
             }
             // Print it. :
         }
@@ -210,18 +214,18 @@ void  bookshop::checkbook(int chk) {
     fin.close() ;
 }
 // Modification  the propreties of the book :
-void bookshop::modifybook( ) {
+void bookshop::modifybook(std::string file_name , std::string new_file ) {
 
     /* start the operation : */
      bookshop ajout_bksh ;
 
-     std::ifstream fich;
-     std::ofstream fout ;
+     std::ifstream fich; // old_file
+     std::ofstream fout ; // new_file
   std::string line, someString;
   std::cout << "Enter the Roll Number : " ;
      std::cin >> someString ; 
-  fich.open("../../dataFiles/dataset.csv");  //The path to your file goes here
-  fout.open("../../dataFiles/updatedataset.csv" ,  std::ios::app) ;
+  fich.open("../../dataFiles/"+file_name);  //The path to your file goes here
+  fout.open("../../dataFiles/"+new_file ,  std::ios::app) ;
   while (fich){  //You don't have to ask if the file is open but it's more secure
     while (std::getline(fich , line )){
          if (line.find(someString) != std::string::npos)
@@ -229,7 +233,7 @@ void bookshop::modifybook( ) {
         //         /* code */
         //  std::cout << line << std::endl ;
 
-                  ajout_bksh.addbook(file_name) ;
+                  ajout_bksh.addbook(new_file) ;
                    std::cout << "Has been trashed ! \n\n" ;
          //           continue;
          }
@@ -245,14 +249,13 @@ void bookshop::modifybook( ) {
   } // end while
 
   } //end if
-
     
     fich.close();
 
 }
 
 // Suppression des proprieties des biblio :: 
-void bookshop::deletebook( ) {
+void bookshop::deletebook(std::string file_name  , std::string new_file ) {
      /* start the operation : */
      bookshop ajout_bksh ;
      std::ifstream fich;
@@ -260,8 +263,8 @@ void bookshop::deletebook( ) {
   std::string line, someString;
   std::cout << "Enter the Roll Number that you wanna delete : " ;
      std::cin >> someString ; 
-  fich.open("../../dataFiles/dataset.csv");  //The path to your file goes here
-  fout.open("../../dataFiles/updatedataset.csv" ,  std::ios::app) ;
+  fich.open( "../../dataFiles/"+file_name );  //The path to your file goes here
+  fout.open("../../dataFiles/"+new_file ,  std::ios::app) ;
   while (fich){  //You don't have to ask if the file is open but it's more secure
     while (std::getline(fich , line )){
          if (line.find(someString) != std::string::npos)
@@ -283,11 +286,6 @@ void bookshop::deletebook( ) {
 
   } //end if
 
-    rename("../../dataFiles/dataset.csv" ,"../../dataFiles/updatedataset.csv" );
     fich.close();
     
 }
-
-// std::string bookshop::toString( ){
-//     return " "+ std::to_string(this->id) +" " + this->name+ " ." ;
-// }
